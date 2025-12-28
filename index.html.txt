@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SunPure | Solar-Powered Smart Sun-Tracking Water Purification System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1A5CA8;      /* Deeper tech blue */
+            --primary-blue-light: #2A6EBB; /* Original blue kept */
+            --solar-yellow: #FFC107;      /* Brighter solar yellow */
+            --solar-yellow-dark: #FFA000;  /* Darker yellow */
+            --eco-green: #43A047;         /* Fresher green */
+            --accent-orange: #FF7043;     /* Softer vibrant orange */
+            --pure-white: #FFFFFF;
+            --light-gray: #F8F9FA;        /* Lighter gray */
+            --medium-gray: #E9ECEF;
+            --dark-gray: #212529;         /* Darker gray */
+            --text-color: #495057;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 5px 15px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+            --gradient-sun: linear-gradient(135deg, var(--solar-yellow), var(--solar-yellow-dark));
+            --gradient-water: linear-gradient(135deg, var(--primary-blue), #4A90E2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--pure-white);
+            overflow-x: hidden;
+            font-size: 16px;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--dark-gray);
+            line-height: 1.3;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Loading Animation */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--pure-white);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .loading-logo {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-sun);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        /* Improved Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+            padding: 18px 0;
+            transition: var(--transition);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-sun);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            transition: var(--transition);
+        }
+        
+        .logo:hover .logo-icon {
+            transform: rotate(15deg) scale(1.05);
+        }
+        
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 26px;
+            color: var(--primary-blue);
+        }
+        
+        .logo-text span {
+            color: var(--solar-yellow);
+            position: relative;
+        }
+        
+        .logo-text span::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-sun);
+            border-radius: 2px;
+        }
+        
+        nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+            margin: 0;
+            padding: 0;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: 500;
+            font-size: 15px;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        nav a:hover {
+            color: var(--primary-blue);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-sun);
+            left: 0;
+            bottom: 0;
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+        
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary-blue);
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        /* Optimized Hero Section */
+        .hero {
+            height: 100vh;
+            min-height: 700px;
+            background: linear-gradient(135deg, rgba(26, 92, 168, 0.9) 0%, rgba(42, 110, 187, 0.8) 100%), url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 193, 7, 0.2) 0%, transparent 50%);
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.8rem;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .tagline {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 25px;
+            color: var(--solar-yellow);
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+        
+        .slogan {
+            font-size: 1.4rem;
+            font-style: italic;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+        
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: var(--gradient-sun);
+            color: var(--dark-gray);
+            padding: 18px 45px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 18px;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 193, 7, 0.3);
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        /* Optimized Sun Tracker Interaction */
+        .sun-tracker {
+            position: absolute;
+            top: 120px;
+            right: 120px;
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-sun);
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(255, 193, 7, 0.6);
+            animation: sunPulse 4s infinite alternate;
+            z-index: 2;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .sun-tracker:hover {
+            transform: scale(1.1);
+        }
+        
+        .sun-tracker::after {
+            content: '☀️ Click to track the sun';
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 12px;
+            color: white;
+            opacity: 0.8;
+        }
+        
+        /* Optimized Water Drop Animation */
+        .water-drop {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-water);
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            opacity: 0;
+            animation: drop 8s infinite linear;
+            filter: drop-shadow(0 2px 5px rgba(26, 92, 168, 0.3));
+        }
+        
+        .water-drop:nth-child(2) { animation-delay: 1s; left: 10%; }
+        .water-drop:nth-child(3) { animation-delay: 3s; left: 30%; }
+        .water-drop:nth-child(4) { animation-delay: 5s; left: 60%; }
+        .water-drop:nth-child(5) { animation-delay: 7s; left: 85%; }
+        .water-drop:nth-child(6) { animation-delay: 2s; left: 25%; }
+        .water-drop:nth-child(7) { animation-delay: 4s; left: 45%; }
+        .water-drop:nth-child(8) { animation-delay: 6s; left: 75%; }
+        
+        /* Common Section Styles */
+        .section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.8rem;
+            display: inline-block;
+            padding-bottom: 20px;
+            position: relative;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 5px;
+            background: var(--gradient-sun);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+        
+        /* Improved Product Introduction */
+        .product-desc {
+            background-color: var(--light-gray);
+            position: relative;
+        }
+        
+        .product-desc::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, var(--pure-white), transparent);
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .product-image {
+            position: relative;
+            height: 450px;
+            background: linear-gradient(135deg, var(--pure-white), var(--medium-gray));
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+        
+        .water-purification {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .dirty-water, .clean-water {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            position: relative;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+        
+        .dirty-water:hover, .clean-water:hover {
+            transform: scale(1.05);
+        }
+        
+        .dirty-water {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: white;
+        }
+        
+        .clean-water {
+            background: var(--gradient-water);
+            color: white;
+        }
+        
+        .purification-process {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+        }
+        
+        .purification-arrow {
+            position: relative;
+            width: 80px;
+            height: 10px;
+            background: linear-gradient(to right, #8B4513, var(--primary-blue));
+        }
+        
+        .purification-arrow::before,
+        .purification-arrow::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+        
+        .purification-arrow::before {
+            left: -10px;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent #8B4513 transparent transparent;
+        }
+        
+        .purification-arrow::after {
+            right: -10px;
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent var(--primary-blue);
+        }
+        
+        .sun-animation {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-sun);
+            border-radius: 50%;
+            animation: sunMove 4s infinite alternate;
+            box-shadow: 0 0 30px rgba(255, 193, 7, 0.4);
+        }
+        
+        /* Improved Feature List */
+        .feature-list {
+            list-style: none;
+            margin: 30px 0;
+        }
+        
+        .feature-list li {
+            margin-bottom: 22px;
+            padding-left: 40px;
+            position: relative;
+            font-size: 17px;
+        }
+        
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--eco-green);
+            font-weight: bold;
+            font-size: 20px;
+            width: 30px;
+            height: 30px;
+            background: rgba(67, 160, 71, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Optimized Interactive Button */
+        .interactive-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--gradient-water);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .interactive-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(26, 92, 168, 0.3);
+        }
+        
+        /* Improved Data Cards */
+        .data-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 25px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .data-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient-sun);
+        }
+        
+        .data-card:hover {
+            transform: translateY(-12px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .data-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(26, 92, 168, 0.1), rgba(255, 193, 7, 0.1));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: var(--primary-blue);
+            font-size: 34px;
+            transition: var(--transition);
+        }
+        
+        .data-card:hover .data-icon {
+            transform: scale(1.1) rotate(5deg);
+            background: linear-gradient(135deg, rgba(26, 92, 168, 0.15), rgba(255, 193, 7, 0.15));
+        }
+        
+        /* Improved Team Cards */
+        .team-member {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .member-img {
+            height: 280px;
+            background: linear-gradient(135deg, var(--primary-blue), #4A90E2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .member-img::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+        
+        /* Improved Market Analysis */
+        .market-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border-left: 5px solid var(--eco-green);
+            height: 100%;
+        }
+        
+        .market-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        /* Improved Contact Section */
+        .contact-item {
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-8px);
+        }
+        
+        /* Improved Footer */
+        footer {
+            background: linear-gradient(135deg, var(--dark-gray), #343A40);
+            color: white;
+            padding: 50px 0 30px;
+            position: relative;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient-sun);
+        }
+        
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-sun);
+            color: var(--dark-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 193, 7, 0.3);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+            animation: modalIn 0.3s ease-out;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--dark-gray);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            background: var(--light-gray);
+        }
+        
+        /* Animation Keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        @keyframes sunPulse {
+            0% { box-shadow: 0 0 50px rgba(255, 193, 7, 0.6); }
+            100% { box-shadow: 0 0 80px rgba(255, 193, 7, 0.9); }
+        }
+        
+        @keyframes drop {
+            0% {
+                top: -50px;
+                opacity: 0;
+                transform: rotate(-45deg) scale(0.8);
+            }
+            10% {
+                opacity: 1;
+                transform: rotate(-45deg) scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                top: 100vh;
+                opacity: 0;
+                transform: rotate(-45deg) scale(0.8);
+            }
+        }
+        
+        @keyframes sunMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(30px); }
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* Responsive Design Optimization */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 30px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .product-grid, .team-grid, .market-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .data-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .contact-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .tagline {
+                font-size: 1.6rem;
+            }
+            
+            .sun-tracker {
+                width: 70px;
+                height: 70px;
+                top: 100px;
+                right: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav ul {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                gap: 0;
+                box-shadow: var(--shadow-md);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+                z-index: 999;
+            }
+            
+            nav ul.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            nav ul li {
+                width: 100%;
+                text-align: center;
+            }
+            
+            nav a {
+                display: block;
+                padding: 15px 20px;
+                border-bottom: 1px solid var(--light-gray);
+            }
+            
+            nav a:last-child {
+                border-bottom: none;
+            }
+            
+            .hero {
+                min-height: 600px;
+                background-attachment: scroll;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.4rem;
+            }
+            
+            .section {
+                padding: 70px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+            
+            .sun-tracker {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .data-grid, .contact-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            .cta-button, .interactive-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .container {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Animation -->
+    <div id="loading">
+        <div class="loading-logo">
+            <i class="fas fa-sun"></i>
+        </div>
+        <div style="font-size: 18px; color: var(--primary-blue); margin-top: 20px; font-weight: 600;">
+            Loading...
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header>
+        <div class="container header-container">
+            <a href="#home" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-sun"></i>
+                </div>
+                <div class="logo-text">Sun<span>Pure</span></div>
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul id="mainNav">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#product">Product</a></li>
+                    <li><a href="#innovation">Innovation</a></li>
+                    <li><a href="#data">Experimental Data</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#market">Market Analysis</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Banner -->
+    <section class="hero" id="home">
+        <div class="sun-tracker" id="sun"></div>
+        
+        <!-- Water Drop Animation -->
+        <div class="water-drop"></div>
+        <div class="water-drop"></div>
+        <div class="water-drop"></div>
+        <div class="water-drop"></div>
+        <div class="water-drop"></div>
+        <div class="water-drop"></div>
+        <div class="water-drop"></div>
+        <div class="water-drop"></div>
+        
+        <div class="hero-content">
+            <h1>Smart Sun-Tracking Water Purifier</h1>
+            <div class="tagline">Solar-Powered Automatic Distillation System Based on Photosensitive Sensing</div>
+            <div class="slogan">"Pure Water, Powered by the Sun"</div>
+            <p>
+                Providing low-cost, zero-carbon distributed water purification solutions for areas with abundant sunlight but scarce water resources, bridging the gap between household water purifiers and industrial desalination technology.
+            </p>
+            <a href="#product" class="cta-button">
+                <span>Explore Our Innovation</span>
+                <i class="fas fa-arrow-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Product Introduction -->
+    <section class="section product-desc" id="product">
+        <div class="container">
+            <div class="section-title">
+                <h2>Product Introduction</h2>
+            </div>
+            <div class="product-grid fade-in">
+                <div class="product-image">
+                    <div class="sun-animation"></div>
+                    <div class="water-purification">
+                        <div class="dirty-water">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <div class="purification-process">
+                            <div class="sun-animation"></div>
+                            <div class="purification-arrow"></div>
+                        </div>
+                        <div class="clean-water">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="font-size: 2rem; margin-bottom: 20px;">Solar Automatic Tracking Distillation Device</h3>
+                    <p style="margin-bottom: 30px; font-size: 1.1rem;">
+                        This device is designed and implemented for areas with abundant sunlight but scarce water resources, providing a low-cost, zero-carbon distributed water purification solution.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Concentrates solar energy with parabolic reflectors and vacuum solar collector tubes</li>
+                        <li>Drives four-quadrant photosensitive tracking system through worm gear motors, achieving real-time sun tracking with ±2° accuracy</li>
+                        <li>Water is pumped to black metal heating tubes to generate steam, which is liquefied and collected in trapezoidal condensation chambers</li>
+                        <li>Control system based on Arduino platform, using PWM algorithm to precisely match solar movement</li>
+                        <li>Daily production: 3-5 liters, suitable for household water scenarios</li>
+                        <li>No reliance on centralized infrastructure, portable, economical, and environmentally friendly</li>
+                    </ul>
+                    <button class="interactive-btn" id="showDetailsBtn">
+                        <i class="fas fa-info-circle"></i>
+                        <span>View Technical Details</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technological Innovation -->
+    <section class="section" id="innovation">
+        <div class="container">
+            <div class="section-title">
+                <h2>Technological Innovation</h2>
+            </div>
+            <div class="data-grid fade-in">
+                <div class="data-card">
+                    <div class="data-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="data-value">100%</div>
+                    <div class="data-label">Solar-Powered</div>
+                    <p>Uses only solar thermal energy, zero electricity consumption, zero carbon emissions</p>
+                </div>
+                <div class="data-card">
+                    <div class="data-icon">
+                        <i class="fas fa-bacteria"></i>
+                    </div>
+                    <div class="data-value">100%</div>
+                    <div class="data-label">Sterilization Rate</div>
+                    <p>Distillation process simultaneously eliminates bacteria, viruses, and chemical pollutants</p>
+                </div>
+                <div class="data-card">
+                    <div class="data-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="data-value">±2°</div>
+                    <div class="data-label">Tracking Accuracy</div>
+                    <p>Four-quadrant photosensitive sensor achieves high-precision sun tracking</p>
+                </div>
+                <div class="data-card">
+                    <div class="data-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="data-value">0</div>
+                    <div class="data-label">Maintenance Required</div>
+                    <p>Passive technology, no moving parts wear, almost maintenance-free</p>
+                </div>
+            </div>
+            
+            <div class="fade-in" style="margin-top: 70px;">
+                <h3 style="text-align: center; margin-bottom: 40px;">Comparative Advantages Over Existing Technologies</h3>
+                <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+                    <div class="market-card">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                            <div style="width: 50px; height: 50px; background: #ffe6e6; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-industry" style="color: #d32f2f; font-size: 24px;"></i>
+                            </div>
+                            <h4 style="color: #d32f2f; margin: 0;">Desalination</h4>
+                        </div>
+                        <p>High energy consumption (3-10 kWh/m³), relies on fossil fuels, high cost, severe pollution</p>
+                    </div>
+                    <div class="market-card">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                            <div style="width: 50px; height: 50px; background: #fff3cd; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-filter" style="color: #ff9800; font-size: 24px;"></i>
+                            </div>
+                            <h4 style="color: #ff9800; margin: 0;">Reverse Osmosis</h4>
+                        </div>
+                        <p>Wastes 2-3 liters of water per 1 liter of purified water, requires frequent filter replacement, continuous power consumption</p>
+                    </div>
+                    <div class="market-card">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                            <div style="width: 50px; height: 50px; background: var(--gradient-sun); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-sun" style="color: white; font-size: 24px;"></i>
+                            </div>
+                            <h4 style="color: var(--eco-green); margin: 0;">SunPure</h4>
+                        </div>
+                        <p>Zero energy consumption, zero pollution, low cost, portable, suitable for off-grid environments</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experimental Data -->
+    <section class="section data-section" id="data">
+        <div class="container">
+            <div class="section-title">
+                <h2>Experimental Data</h2>
+            </div>
+            <div class="data-grid fade-in">
+                <div class="data-card">
+                    <div class="data-icon">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <div class="data-value">95%</div>
+                    <div class="data-label">TDS Reduction</div>
+                    <p>From 448 ppm to 21 ppm</p>
+                </div>
+                <div class="data-card">
+                    <div class="data-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="data-value">80%</div>
+                    <div class="data-label">Conductivity Reduction</div>
+                    <p>From 456 μS/cm to 92 μS/cm</p>
+                </div>
+                <div class="data-card">
+                    <div class="data-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <div class="data-value">100%</div>
+                    <div class="data-label">Pollutant Removal</div>
+                    <p>Complete removal of nitrates, sulfates, and heavy metals</p>
+                </div>
+                <div class="data-card">
+                    <div class="data-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="data-value">< $0.01</div>
+                    <div class="data-label">Cost per Liter</div>
+                    <p>Far lower than traditional purification methods</p>
+                </div>
+            </div>
+            
+            <div class="fade-in" style="margin-top: 70px; background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 40px; border-radius: 20px; box-shadow: var(--shadow-md);">
+                <h3 style="text-align: center; margin-bottom: 40px;">Water Purification Effectiveness Comparison</h3>
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 30px;">
+                    <div style="flex: 1; min-width: 200px; text-align: center;">
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                            <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #8B4513, #A0522D); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                        </div>
+                        <h4 style="margin-bottom: 15px;">Raw Water</h4>
+                        <div style="height: 150px; background: linear-gradient(to top, #8B4513 70%, #e0e0e0 30%); width: 60px; margin: 0 auto 20px; border-radius: 10px; box-shadow: var(--shadow-sm);"></div>
+                        <p><strong>TDS:</strong> 448 ppm</p>
+                        <p><strong>EC:</strong> 456 μS/cm</p>
+                    </div>
+                    <div style="flex: 1; min-width: 200px; text-align: center;">
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                            <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #5a8bb8, #7ba3cc); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                        </div>
+                        <h4 style="margin-bottom: 15px;">Single Distillation</h4>
+                        <div style="height: 150px; background: linear-gradient(to top, #5a8bb8 40%, #e0e0e0 60%); width: 60px; margin: 0 auto 20px; border-radius: 10px; box-shadow: var(--shadow-sm);"></div>
+                        <p><strong>TDS:</strong> 79 ppm</p>
+                        <p><strong>EC:</strong> 130 μS/cm</p>
+                    </div>
+                    <div style="flex: 1; min-width: 200px; text-align: center;">
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                            <div style="width: 60px; height: 60px; background: var(--gradient-water); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                        </div>
+                        <h4 style="margin-bottom: 15px;">Triple Distillation</h4>
+                        <div style="height: 150px; background: linear-gradient(to top, var(--primary-blue) 15%, #e0e0e0 85%); width: 60px; margin: 0 auto 20px; border-radius: 10px; box-shadow: var(--shadow-sm);"></div>
+                        <p><strong>TDS:</strong> 21 ppm</p>
+                        <p><strong>EC:</strong> 92 μS/cm</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Introduction -->
+    <section class="section team-section" id="team">
+        <div class="container">
+            <div class="section-title">
+                <h2>Team Introduction</h2>
+            </div>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 60px; font-size: 1.1rem;">
+                We are a two-person team formed during middle school, with two years of collaboration experience. Jerry is responsible for technology development and strategic planning, while Jiahe handles financial operations and market expansion. We have accumulated rich experience in physics competitions, financial competitions, Model United Nations, and other activities.
+            </p>
+            
+            <div class="team-grid fade-in">
+                <div class="team-member">
+                    <div class="member-img">
+                        <i class="fas fa-user-astronaut"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Jerry Jiang</h3>
+                        <div class="member-role">CEO & CTO</div>
+                        <p style="margin-bottom: 20px;">Extensive experience in physics competitions, participated in SIC financial competition. Proposed the core concept of the smart sun-tracking water purifier and is responsible for the entire product design and implementation. As the company's Chief Executive Officer and Chief Technology Officer, leads technology R&D direction and company strategic planning, skilled in engineering, physical modeling, and control system development.</p>
+                        <div>
+                            <span class="skill-tag">Physics Competitions</span>
+                            <span class="skill-tag">Engineering</span>
+                            <span class="skill-tag">Strategic Planning</span>
+                            <span class="skill-tag">Control Systems</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-img">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Jiahe Hu</h3>
+                        <div class="member-role">CFO & COO</div>
+                        <p style="margin-bottom: 20px;">Lived in the UAE for 9 years, deeply understands local water scarcity issues. Participated in Model United Nations activities, studied market philosophy. As the company's Chief Financial Officer and Chief Operating Officer, responsible for financial management, operational optimization, and market expansion, driving the project's commercialization process and social impact.</p>
+                        <div>
+                            <span class="skill-tag">Financial Management</span>
+                            <span class="skill-tag">Operations Management</span>
+                            <span class="skill-tag">Market Strategy</span>
+                            <span class="skill-tag">Business Development</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="fade-in" style="text-align: center; margin-top: 70px; background: rgba(26, 92, 168, 0.05); padding: 40px; border-radius: 20px;">
+                <h3 style="margin-bottom: 25px;">Project Motivation</h3>
+                <p style="max-width: 800px; margin: 0 auto; font-size: 1.1rem;">
+                    The initial motivation for the project stemmed from Jiahe's 9-year experience living in the UAE. He discovered the severe water scarcity problem in the UAE—the country actually has very limited available water resources. This is an ongoing issue that has negative impacts on both the environment and the economy. Jerry became interested in this problem and decided to develop a project based on it, ultimately giving birth to the smart sun-tracking water purifier.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Analysis -->
+    <section class="section" id="market">
+        <div class="container">
+            <div class="section-title">
+                <h2>Market Analysis</h2>
+            </div>
+            
+            <div class="fade-in">
+                <h3 style="text-align: center; margin-bottom: 40px;">Target Markets</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; margin-bottom: 60px;">
+                    <div class="market-card" style="text-align: center;">
+                        <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #E8F5E9, #C8E6C9); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                            <i class="fas fa-home" style="font-size: 2rem; color: var(--eco-green);"></i>
+                        </div>
+                        <h4>Rural Households</h4>
+                        <p>Areas lacking clean water sources and electricity supply</p>
+                    </div>
+                    <div class="market-card" style="text-align: center;">
+                        <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #E3F2FD, #BBDEFB); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                            <i class="fas fa-island-tropical" style="font-size: 2rem; color: var(--primary-blue);"></i>
+                        </div>
+                        <h4>Island Communities</h4>
+                        <p>12 island nations and 40 coastal countries</p>
+                    </div>
+                    <div class="market-card" style="text-align: center;">
+                        <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #FFF3E0, #FFE0B2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                            <i class="fas fa-hands-helping" style="font-size: 2rem; color: var(--accent-orange);"></i>
+                        </div>
+                        <h4>Relief Agencies</h4>
+                        <p>Provide emergency water purification solutions in disaster areas</p>
+                    </div>
+                    <div class="market-card" style="text-align: center;">
+                        <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #FCE4EC, #F8BBD0); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                            <i class="fas fa-school" style="font-size: 2rem; color: #C2185B;"></i>
+                        </div>
+                        <h4>Schools & NGOs</h4>
+                        <p>Provide sustainable water purification solutions for impoverished communities</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="market-grid fade-in">
+                <div class="market-card">
+                    <h3 style="margin-bottom: 20px;">Market Size</h3>
+                    <p>Globally, 2.2 billion people lack access to safe drinking water, with over 1.4 million deaths annually from waterborne diseases. The UAE desalination/distillation equipment market is projected to reach $11.2 billion by 2030.</p>
+                </div>
+                <div class="market-card">
+                    <h3 style="margin-bottom: 20px;">Business Model</h3>
+                    <p>Revenue sources: direct sales, maintenance contracts, NGO partnerships, carbon credit cooperation. Unit price: 2500 yuan, target gross margin: 25%. Launch through government-funded pilot projects, gradually expanding to NGO and commercial sales.</p>
+                </div>
+            </div>
+            
+            <div class="fade-in" style="height: 400px; background: linear-gradient(135deg, #E9F4FF, #D4E7FF); border-radius: 20px; margin-top: 60px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                <div style="text-align: center; position: relative; z-index: 1;">
+                    <i class="fas fa-globe-americas" style="font-size: 6rem; color: var(--primary-blue); opacity: 0.3;"></i>
+                    <p style="margin-top: 20px; font-size: 1.2rem; color: var(--dark-gray); font-weight: 600;">Global Water Scarcity Areas Distribution Map</p>
+                    <p style="margin-top: 10px; color: var(--text-color);">12 island nations + 40 coastal countries</p>
+                </div>
+                
+                <!-- Map Markers -->
+                <div style="position: absolute; top: 30%; left: 20%; width: 15px; height: 15px; background: var(--accent-orange); border-radius: 50%; box-shadow: 0 0 0 5px rgba(255, 112, 67, 0.3);"></div>
+                <div style="position: absolute; top: 40%; left: 50%; width: 15px; height: 15px; background: var(--accent-orange); border-radius: 50%; box-shadow: 0 0 0 5px rgba(255, 112, 67, 0.3);"></div>
+                <div style="position: absolute; top: 60%; left: 70%; width: 15px; height: 15px; background: var(--accent-orange); border-radius: 50%; box-shadow: 0 0 0 5px rgba(255, 112, 67, 0.3);"></div>
+                <div style="position: absolute; top: 70%; left: 30%; width: 15px; height: 15px; background: var(--accent-orange); border-radius: 50%; box-shadow: 0 0 0 5px rgba(255, 112, 67, 0.3);"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact-section" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2 style="color: white;">Contact Us</h2>
+            </div>
+            <p style="max-width: 800px; margin: 0 auto 60px; text-align: center; font-size: 1.1rem; color: rgba(255, 255, 255, 0.9);">
+                We are seeking partners, investors, and pilot project opportunities. If you are interested in our innovative water purifier, please contact us.
+            </p>
+            
+            <div class="contact-info fade-in">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 style="color: white;">Address</h3>
+                    <p style="color: rgba(255, 255, 255, 0.9);">XXX City Technology Innovation Park</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3 style="color: white;">Phone</h3>
+                    <p style="color: rgba(255, 255, 255, 0.9);">1234578910</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 style="color: white;">Email</h3>
+                    <p style="color: rgba(255, 255, 255, 0.9);">contact@sunpure-water.com</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 60px; text-align: center;">
+                <button class="cta-button" id="contactBtn">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Send Cooperation Interest</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;">
+                <a href="#home" class="logo" style="margin-bottom: 30px;">
+                    <div class="logo-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="logo-text">Sun<span>Pure</span></div>
+                </a>
+                <div style="display: flex; gap: 30px; margin-bottom: 30px;">
+                    <a href="#" style="color: white; font-size: 20px; opacity: 0.8; transition: var(--transition);">
+                        <i class="fab fa-weibo"></i>
+                    </a>
+                    <a href="#" style="color: white; font-size: 20px; opacity: 0.8; transition: var(--transition);">
+                        <i class="fab fa-weixin"></i>
+                    </a>
+                    <a href="#" style="color: white; font-size: 20px; opacity: 0.8; transition: var(--transition);">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <p style="margin-bottom: 10px; opacity: 0.8;">© 2025 SunPure Smart Sun-Tracking Water Purifier Project. All rights reserved.</p>
+                <p style="font-size: 0.9rem; opacity: 0.6;">2026 Shanghai Youth Science Society Advanced Member Selection and Science Seed International Exchange Program Selection Activity - Engineering Project</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#home" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Modal -->
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <h3 style="margin-bottom: 25px;">Send Cooperation Interest</h3>
+            <form id="contactForm">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Name</label>
+                    <input type="text" required style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; transition: var(--transition);">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Email</label>
+                    <input type="email" required style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; transition: var(--transition);">
+                </div>
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Cooperation Interest</label>
+                    <textarea rows="5" required style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; resize: vertical; transition: var(--transition);"></textarea>
+                </div>
+                <button type="submit" class="interactive-btn" style="width: 100%; justify-content: center;">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Send Interest</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Hide loading animation after page loads
+        window.addEventListener('load', function() {
+            const loading = document.getElementById('loading');
+            setTimeout(() => {
+                loading.style.opacity = '0';
+                loading.style.visibility = 'hidden';
+            }, 800);
+        });
+
+        // Navigation bar scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            const backToTop = document.getElementById('backToTop');
+            
+            if (window.scrollY > 100) {
+                header.style.padding = '12px 0';
+                header.style.boxShadow = 'var(--shadow-md)';
+                backToTop.classList.add('visible');
+            } else {
+                header.style.padding = '18px 0';
+                header.style.boxShadow = 'var(--shadow-sm)';
+                backToTop.classList.remove('visible');
+            }
+            
+            // Highlight current navigation item
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Optimized sun tracking interaction
+        const sun = document.getElementById('sun');
+        let sunX = 0, sunY = 0;
+        let mouseX = 0, mouseY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        // Smoother sun tracking animation
+        function animateSun() {
+            const centerX = window.innerWidth - 150;
+            const centerY = 150;
+            
+            // Calculate sun position (follows mouse with limitations)
+            sunX += (mouseX - centerX - sunX) * 0.05;
+            sunY += (mouseY - centerY - sunY) * 0.05;
+            
+            // Limit movement range
+            const maxMove = 80;
+            sunX = Math.max(-maxMove, Math.min(maxMove, sunX));
+            sunY = Math.max(-maxMove, Math.min(maxMove, sunY));
+            
+            sun.style.transform = `translate(${sunX}px, ${sunY}px)`;
+            
+            requestAnimationFrame(animateSun);
+        }
+        
+        animateSun();
+        
+        // Sun click effect
+        sun.addEventListener('click', function() {
+            sun.style.animation = 'none';
+            sun.style.transform = 'scale(1.3)';
+            sun.style.boxShadow = '0 0 100px rgba(255, 193, 7, 1)';
+            
+            setTimeout(() => {
+                sun.style.animation = 'sunPulse 4s infinite alternate';
+                sun.style.transform = `translate(${sunX}px, ${sunY}px)`;
+            }, 500);
+            
+            // Show prompt
+            alert('Sun tracking system activated! Our device automatically tracks the sun\'s position to maximize solar energy utilization.');
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+        
+        mobileMenuBtn.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+        
+        // Close mobile menu after clicking navigation item
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    mainNav.classList.remove('active');
+                    mobileMenuBtn.querySelector('i').classList.replace('fa-times', 'fa-bars');
+                }
+            });
+        });
+
+        // Page scroll animation
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const appearOnScroll = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        
+        fadeElements.forEach(element => {
+            appearOnScroll.observe(element);
+        });
+
+        // Skill tag styling
+        const skillTags = document.querySelectorAll('.skill-tag');
+        skillTags.forEach(tag => {
+            tag.style.display = 'inline-block';
+            tag.style.backgroundColor = 'rgba(26, 92, 168, 0.1)';
+            tag.style.color = 'var(--primary-blue)';
+            tag.style.padding = '6px 15px';
+            tag.style.borderRadius = '20px';
+            tag.style.fontSize = '0.9rem';
+            tag.style.marginRight = '8px';
+            tag.style.marginBottom = '8px';
+            tag.style.transition = 'var(--transition)';
+            
+            tag.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = 'var(--primary-blue)';
+                this.style.color = 'white';
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            tag.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = 'rgba(26, 92, 168, 0.1)';
+                this.style.color = 'var(--primary-blue)';
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Interactive button functionality
+        document.getElementById('showDetailsBtn').addEventListener('click', function() {
+            const details = `
+Technical Details:
+
+1. Solar Tracking System:
+   - Four-quadrant photosensitive sensor
+   - ±2° tracking accuracy
+   - Worm gear motor drive
+   - Arduino PWM control algorithm
+
+2. Heating System:
+   - Parabolic reflector (80cm diameter)
+   - Vacuum solar collector tube
+   - Black metal heating tube
+   - Maximum temperature: 120°C
+
+3. Control System:
+   - Arduino Uno microcontroller
+   - Photosensitive sensor array
+   - PWM algorithm matches sun movement speed (0.25°/minute)
+   - Automatic sleep/wake function
+
+4. Purification Process:
+   - Raw water → pre-filtration → heating tube evaporation → trapezoidal condensation chamber liquefaction → pure water collection
+   - Daily production: 3-5 liters
+   - TDS reduction: 95% (448ppm → 21ppm)
+
+5. Performance Indicators:
+   - Zero carbon emissions
+   - Zero electricity consumption
+   - Maintenance cost: almost zero
+   - Service life: 5-8 years
+            `;
+            
+            alert(details);
+        });
+
+        // Modal functionality
+        const contactBtn = document.getElementById('contactBtn');
+        const contactModal = document.getElementById('contactModal');
+        const modalClose = document.getElementById('modalClose');
+        const contactForm = document.getElementById('contactForm');
+        
+        contactBtn.addEventListener('click', function() {
+            contactModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        modalClose.addEventListener('click', function() {
+            contactModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        contactModal.addEventListener('click', function(e) {
+            if (e.target === contactModal) {
+                contactModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Form submission logic can be added here
+            alert('Thank you for your cooperation interest! We will respond within 24 hours.');
+            contactModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            contactForm.reset();
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Enhanced water drop animation
+        function createWaterDrop() {
+            if (document.querySelectorAll('.water-drop').length < 15) {
+                const drop = document.createElement('div');
+                drop.className = 'water-drop';
+                drop.style.left = Math.random() * 100 + '%';
+                drop.style.animationDelay = Math.random() * 8 + 's';
+                document.querySelector('.hero').appendChild(drop);
+                
+                // Remove completed animation water drops
+                setTimeout(() => {
+                    if (drop.parentNode) {
+                        drop.parentNode.removeChild(drop);
+                    }
+                }, 9000);
+            }
+        }
+        
+        setInterval(createWaterDrop, 1000);
+        
+        // Initial creation of some water drops
+        for (let i = 0; i < 8; i++) {
+            setTimeout(createWaterDrop, i * 200);
+        }
+    </script>
+</body>
+</html>
